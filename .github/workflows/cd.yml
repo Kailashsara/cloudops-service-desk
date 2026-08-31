@@ -35,3 +35,17 @@ jobs:
       - name: Verify Docker Image
         run: |
           docker images
+
+      - name: Login to ACR
+        run: |
+          az acr login --name ${{ secrets.ACR_NAME }}
+
+      - name: Tag Docker Image
+        run: |
+          docker tag cloudops-service-desk:1.0.0 \
+          ${{ secrets.ACR_NAME }}.azurecr.io/cloudops-service-desk:1.0.0
+
+      - name: Push Docker Image
+        run: |
+          docker push \
+          ${{ secrets.ACR_NAME }}.azurecr.io/cloudops-service-desk:1.0.0
